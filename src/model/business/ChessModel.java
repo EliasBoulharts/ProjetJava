@@ -9,8 +9,17 @@ import tools.data.Couleur;
 
 public class ChessModel implements ChessGameModel{
 	private Couleur colorCurrentPlayer;
+	private ChessImplementor implementor;
 	public ChessModel (){
 		this.colorCurrentPlayer = BoardGameConfig.getBeginColor();
+		this.implementor = new ChessImplementor();
+	}
+
+	@Override
+	public String toString() {
+		return "colorCurrentPlayer : " + colorCurrentPlayer +
+				"\n model :\n" + implementor +
+				"\n";
 	}
 
 	@Override
