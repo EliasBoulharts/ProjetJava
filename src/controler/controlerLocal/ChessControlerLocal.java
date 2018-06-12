@@ -9,6 +9,7 @@ import controler.ChessGameControlerModelVue;
 import vue.ChessGridGUI;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 
 public class ChessControlerLocal implements ChessGameControlerModelVue {
 
@@ -24,20 +25,6 @@ public class ChessControlerLocal implements ChessGameControlerModelVue {
     public void actionsWhenPieceIsSelectedOnGUI(Coord pieceToMoveCoord,
                                                 Couleur pieceToMoveCouleur) {
         // TODO Auto-generated method stub
-        Component component = this.chessBoard.getComponentAt(pieceToMoveCoord.getX(),pieceToMoveCoord.getY());
-        if  (!(component instanceof JPanel)){
-            if (this.isPlayerOk(pieceToMoveCouleur)) {
-
-                MouseInfo e;
-                Point parentLocation = component.getParent().getLocation();
-                xAdjustment = parentLocation.x - e.getX();
-                yAdjustment = parentLocation.y - e.getY();
-                chessPiece = (JLabel) c;
-                chessPiece.setLocation(e.getX() + xAdjustment, e.getY() + yAdjustment);
-                chessPiece.setSize(chessPiece.getWidth(), chessPiece.getHeight());
-                chessBoard.add(chessPiece, JLayeredPane.DRAG_LAYER);
-            }
-        }
 
     }
 

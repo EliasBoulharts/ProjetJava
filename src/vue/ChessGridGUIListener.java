@@ -70,22 +70,20 @@ public class ChessGridGUIListener implements MouseListener,MouseMotionListener {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
+		chessPiece = null;
 		initCoord = chessGrid.findCoords(e.getX(), e.getY());
 		Couleur couleur = chessGrid.findColor(initCoord);
-		chessGameControler.actionsWhenPieceIsSelectedOnGUI(initCoord, couleur);
-
-		chessPiece = null;
-		Component c =  chessGrid.findComponentAt(e.getX(), e.getY());
-		if  (!(c instanceof JPanel)){
-			if (chessGameControler.isPlayerOk(chessGrid.findColor(initCoord))) {
-
-				Point parentLocation = c.getParent().getLocation();
+		Component component =  chessGrid.findComponentAt(e.getX(), e.getY());
+		if (!(component instanceof JPanel)) {
+			if (chessGameControler.isPlayerOk(couleur)) {
+				Point parentLocation = component.getParent().getLocation();
 				xAdjustment = parentLocation.x - e.getX();
 				yAdjustment = parentLocation.y - e.getY();
-				chessPiece = (JLabel) c;
+				chessPiece = (JLabel) component;
 				chessPiece.setLocation(e.getX() + xAdjustment, e.getY() + yAdjustment);
 				chessPiece.setSize(chessPiece.getWidth(), chessPiece.getHeight());
 				chessGrid.add(chessPiece, JLayeredPane.DRAG_LAYER);
+				chessGameControler.actionsWhenPieceIsSelectedOnGUI(initCoord, couleur);
 			}
 		}
 	}
@@ -93,23 +91,18 @@ public class ChessGridGUIListener implements MouseListener,MouseMotionListener {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		if(chessPiece == null) return;
-
-		chessPiece.setVisible(false);
-		Component square =  chessGrid.findComponentAt(e.getX(), e.getY());
-
-		if (square instanceof JLabel){
-			Container parent = square.getParent();
-			parent.remove(0);
-			parent.add( chessPiece );
+		if(chessPiece != null) {
+			chessPiece.setVisible(false);
+			Component square = chessGrid.findComponentAt(e.getX(), e.getY());
+			if (square instanceof JLabel) {
+				Container parent = square.getParent();
+				parent.remove(0);
+				parent.add(chessPiece);
+			} else {
+				Container parent = (Container) square;
+				parent.add(chessPiece);
+			}
+			chessPiece.setVisible(true);
 		}
-		else {
-			Container parent = (Container)square;
-			parent.add( chessPiece );
-		}
-		if(square instanceof ChessSquareGUI){
-			chessGameControler.actionsWhenPieceIsMovedOnGUI(initCoord.getX(), initCoord.getY(), ((ChessSquareGUI) square).getCoord().getX(), ((ChessSquareGUI) square).getCoord().getY());
-		}
-		chessPiece.setVisible(true);
 	}
 }
