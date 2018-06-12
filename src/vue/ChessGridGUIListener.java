@@ -12,9 +12,12 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
 import controler.ChessGameControlerModelVue;
+import tools.data.Coord;
+import tools.data.Couleur;
 
 public class ChessGridGUIListener implements MouseListener,MouseMotionListener {
 	private JLabel chessPiece;
+	private Coord initCoord;
 	private int xAdjustment;
 	private int yAdjustment;
 	private ChessGridGUI chessGrid;
@@ -67,25 +70,25 @@ public class ChessGridGUIListener implements MouseListener,MouseMotionListener {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
+		initCoord = chessGrid.findCoords(e.getX(), e.getY());
+		Couleur couleur = chessGrid.findColor(initCoord);
+		chessGameControler.actionsWhenPieceIsSelectedOnGUI(initCoord, couleur);
+
 		chessPiece = null;
 		Component c =  chessGrid.findComponentAt(e.getX(), e.getY());
+		if  (!(c instanceof JPanel)){
+			if (chessGameControler.isPlayerOk(chessGrid.findColor(initCoord))) {
 
-		if (c instanceof JPanel) 
-			return;
-
-		if (chessGameControler.isPlayerOk(chessGrid.findColor(chessGrid.findCoords(e.getX(), e.getY())))) 
-		{
-
-			Point parentLocation = c.getParent().getLocation();
-			xAdjustment = parentLocation.x - e.getX();
-			yAdjustment = parentLocation.y - e.getY();
-			chessPiece = (JLabel)c;
-			chessPiece.setLocation(e.getX() + xAdjustment, e.getY() + yAdjustment);
-			chessPiece.setSize(chessPiece.getWidth(), chessPiece.getHeight());
-			chessGrid.add(chessPiece, JLayeredPane.DRAG_LAYER);
+				Point parentLocation = c.getParent().getLocation();
+				xAdjustment = parentLocation.x - e.getX();
+				yAdjustment = parentLocation.y - e.getY();
+				chessPiece = (JLabel) c;
+				chessPiece.setLocation(e.getX() + xAdjustment, e.getY() + yAdjustment);
+				chessPiece.setSize(chessPiece.getWidth(), chessPiece.getHeight());
+				chessGrid.add(chessPiece, JLayeredPane.DRAG_LAYER);
+			}
 		}
 	}
-
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
@@ -93,20 +96,20 @@ public class ChessGridGUIListener implements MouseListener,MouseMotionListener {
 		if(chessPiece == null) return;
 
 		chessPiece.setVisible(false);
-		Component c =  chessGrid.findComponentAt(e.getX(), e.getY());
+		Component square =  chessGrid.findComponentAt(e.getX(), e.getY());
 
-		if (c instanceof JLabel){
-			Container parent = c.getParent();
+		if (square instanceof JLabel){
+			Container parent = square.getParent();
 			parent.remove(0);
 			parent.add( chessPiece );
 		}
 		else {
-			Container parent = (Container)c;
+			Container parent = (Container)square;
 			parent.add( chessPiece );
 		}
-
+		if(square instanceof ChessSquareGUI){
+			chessGameControler.actionsWhenPieceIsMovedOnGUI(initCoord.getX(), initCoord.getY(), ((ChessSquareGUI) square).getCoord().getX(), ((ChessSquareGUI) square).getCoord().getY());
+		}
 		chessPiece.setVisible(true);
 	}
 }
-
-

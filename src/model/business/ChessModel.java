@@ -17,8 +17,8 @@ public class ChessModel implements ChessGameModel{
 
 	@Override
 	public String toString() {
-		return "colorCurrentPlayer : " + colorCurrentPlayer +
-				"\n model :\n" + implementor +
+		return "Color current player : " + colorCurrentPlayer +
+				"\nModel :\n" + implementor +
 				"\n";
 	}
 
@@ -43,6 +43,7 @@ public class ChessModel implements ChessGameModel{
 	@Override
 	public ActionType move(int xInit, int yInit, int xFinal, int yFinal) {
 		// TODO Auto-generated method stub
+		System.out.println(this);
 		return null;
 	}
 
