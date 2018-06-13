@@ -12,6 +12,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
 import controler.ChessGameControlerModelVue;
+import model.piece.Pieces;
 import tools.data.Coord;
 import tools.data.Couleur;
 
@@ -103,6 +104,7 @@ public class ChessGridGUIListener implements MouseListener,MouseMotionListener {
 				parent.add(chessPiece);
 			}
 			chessPiece.setVisible(true);
+			chessGameControler.actionsWhenPieceIsMovedOnGUI(this.chessGrid.findCoords(e.getX(), e.getY()),initCoord);
 		}
 	}
 }

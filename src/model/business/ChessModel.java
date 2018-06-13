@@ -43,6 +43,7 @@ public class ChessModel implements ChessGameModel{
 	@Override
 	public ActionType move(int xInit, int yInit, int xFinal, int yFinal) {
 		// TODO Auto-generated method stub
+
 		System.out.println(this);
 		return null;
 	}
